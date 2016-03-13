@@ -9,8 +9,8 @@ function newgame(){
 	//初始化棋盘格
 	init();
 	//在随机两个格子中生成数字
-	getOneNumber();
-	getOneNumber();
+	getOneNumber(board);
+	getOneNumber(board);
 }
 
 function init(){
@@ -78,7 +78,7 @@ function updateBoardView() {
 
 
 //在随机两个格子中生成数字
-function getOneNumber() {
+function getOneNumber(board) {
 	if ( nospace(board) ) //nospace()函数用于判断是否还有空余的格子
 	{
 		return false;
@@ -96,14 +96,14 @@ function getOneNumber() {
 		{
 			if ( board[randx][randy] == 0) {break;}
 			else{
-				randx = parseInt(Math.floor(Math.random() * 4 ));
-				randy = parseInt(Math.floor(Math.random() * 4 ));
+				randx = parseInt( Math.floor(Math.random() * 4 ) );
+				randy = parseInt( Math.floor(Math.random() * 4 ) );
 			}
 		}
 	//二、在随机位置随机产生一个数字,但又由游戏规则可知要么是2，要么是4
 		var randomNumber = Math.random()< 0.5 ? 2 : 4;
 	//三、在随机位置处放置随机产生的数字
-		board[randx][randy] == randomNumber;
+		board[randx][randy] = randomNumber;
 		showNumberWithAnimation(randx,randy,randomNumber);//以动画形式将随机数字显示出来
 
 	return true;
@@ -112,32 +112,32 @@ function getOneNumber() {
 $(document).keydown(function(event){
 	switch(event.keyCode){
 		case 37://left
-			if( moveLeft() )
-			//moverleft函数会先判断是否可以左移，若可以，则返回true，然后执行if条件语句里面的内容，接着将所有元素左移
+			if( moveLeft(board) )
+			//moveleft函数会先判断是否可以左移，若可以，则返回true，然后执行if条件语句里面的内容，接着将所有元素左移
 			{
-				getOneNumber();		//所有元素左移以后，随机产生一个数字;
-				isgameover();		//产生一个数字后，判断游戏是否结束
+				setTimeout("getOneNumber(board)",210);		//所有元素左移以后，随机产生一个数字;
+				setTimeout("isgameover()",210);		//产生一个数字后，判断游戏是否结束
 			}
 			break;
 		case 38://up
-			if( moveUp() )
+			if( moveUp(board) )
 			{
-				getOneNumber();		
-				isgameover();		
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
 			}
 			break;
 		case 39://right
-			if( moveRight() )
+			if( moveRight(board) )
 			{
-				getOneNumber();		
-				isgameover();		
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
 			}
 			break;
 		case 40://down
-			if( moveDown() )
+			if( moveDown(board) )
 			{
-				getOneNumber();		
-				isgameover();		
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
 			}
 			break;
 		default://default
@@ -146,7 +146,13 @@ $(document).keydown(function(event){
 });
 
 function isgameover(){
-	
+	if ( nospace(board) && nomove(board) )
+	{
+		gameover();
+	}
+}
+function gameover(){
+	alert("game is over!");
 }
 
 //所有元素左移
@@ -163,11 +169,11 @@ function moveLeft(){
 				{
 					for( var  k = 0 ; k < j ; k++ )
 					{
-						if (board[i][k] == 0 && noBlock(i,k,j,board) )//noBlock用于判断是否有障碍物
+						if (board[i][k] == 0 && noBlockLeft(i,k,j,board) )//noBlock用于判断是否有障碍物
 						{
 							//移动
 							showMoveAnimation( i , j , i , k);
-							board[i][j-1] = board[i][j];
+							board[i][k] = board[i][j];
 							board[i][j] = 0;
 							continue;
 						}
@@ -176,7 +182,7 @@ function moveLeft(){
 						{
 							//移动
 							showMoveAnimation( i , j , i , k);
-							board[i][j-1] = 2 * board[i][j];
+							board[i][k] = 2 * board[i][j];
 							board[i][j] = 0;
 							continue;
 						}
@@ -184,8 +190,134 @@ function moveLeft(){
 				}
 			}
 		}
+	    setTimeout("updateBoardView()",200);
 		return true;
 	}
 	return false;
 }
+
+
+//所有元素上移
+function moveUp(){
+	if( canMoveUp(board) ) //canMoveLeft()用于判断是否可以执行左移操作
+	//canMovUp()返回true,下面开始执行左移操作
+	//虽然已经确定可以移动了，但是我们还需进一步确定该移动到哪个位置
+	{
+		for( var i = 1 ; i < 4 ; i++)
+		{
+			for( var j = 0 ; j < 4 ; j++)
+			{
+				if ( board[i][j] != 0 )
+				{
+					for( var  k = 0 ; k < i ; k++ )
+					{
+						if (board[k][j] == 0 && noBlockUp(j,k,i,board) )//noBlock用于判断是否有障碍物
+						{
+							//移动
+							showMoveAnimation( i , j , k , j);
+							board[k][j] = board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+
+						else if (board[i][k] == board[i][j] && noBlockUp(j,k,i,board) )
+						{
+							//移动
+							showMoveAnimation( i , j , k , j);
+							board[k][j] = 2 * board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+					}
+				}
+			}
+		}
+    setTimeout("updateBoardView()",200);
+		return true;
+	}
+	return false;
+}
+
+//所有元素左移
+function moveRight(){
+	if( canMoveRight(board) ) //canMoveRight()用于判断是否可以执行左移操作
+	//canMoveRight()返回true,下面开始执行右移操作
+	//虽然已经确定可以移动了，但是我们还需进一步确定该移动到哪个位置
+	{
+		for( var i = 0 ; i < 4 ; i++)
+		{
+			for( var j = 2 ; j >= 0 ; j--)
+			{
+				if ( board[i][j] != 0 )
+				{
+					for( var  k = 3 ; k > j ; k-- )
+					{
+						if (board[i][k] == 0 && noBlockRight(i,k,j,board) )//noBlock用于判断是否有障碍物
+						{
+							//移动
+							showMoveAnimation( i , j , i , k);
+							board[i][k] = board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+
+						else if (board[i][k] == board[i][j] && noBlockRight(i,k,j,board) )
+						{
+							//移动
+							showMoveAnimation( i , j , i , k);
+							board[i][k] = 2 * board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+					}
+				}
+			}
+		}
+    setTimeout("updateBoardView()",200);
+		return true;
+	}
+	return false;
+}
+
+//所有元素下移
+function moveDown(){
+	if( canMoveDown(board) ) //canMoveDown()用于判断是否可以执行左移操作
+	//canMoveDown()返回true,下面开始执行下移操作
+	//虽然已经确定可以移动了，但是我们还需进一步确定该移动到哪个位置
+	{
+		for( var i = 2 ; i >= 0 ; i--)
+		{
+			for( var j = 0 ; j < 4 ; j++)
+			{
+				if ( board[i][j] != 0 )
+				{
+					for( var  k = 3 ; k > i ; k-- )
+					{
+						if (board[k][j] == 0 && noBlockDown(j,k,i,board) )//noBlock用于判断是否有障碍物
+						{
+							//移动
+							showMoveAnimation( i , j , k , j);
+							board[k][j] = board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+
+						else if (board[i][k] == board[i][j] && noBlockDown(j,k,i,board) )
+						{
+							//移动
+							showMoveAnimation( i , j , k , j);
+							board[k][j] = 2 * board[i][j];
+							board[i][j] = 0;
+							continue;
+						}
+					}
+				}
+			}
+		}
+    setTimeout("updateBoardView()",200);
+		return true;
+	}
+	return false;
+}
+
 
