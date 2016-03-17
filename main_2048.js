@@ -53,8 +53,8 @@ function updateBoardView() {
 			{
 				thisNumberCell.css('width','0px');
 				thisNumberCell.css('height','0px');
-				thisNumberCell.css('top',getposTop(i,j)+50);
-				thisNumberCell.css('left',getposLeft(i,j)+50);
+				thisNumberCell.css('top',getposTop(i,j) + 50);
+				thisNumberCell.css('left',getposLeft(i,j) + 50);
 			}
 			else
 			//如果操作对象数值不为0，则将其宽高均设为100px，并更新其位置
@@ -175,16 +175,16 @@ function moveLeft(){
 							showMoveAnimation( i , j , i , k);
 							board[i][k] = board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 
-						else if (board[i][k] == board[i][j] && noBlock(i,k,j,board) )
+						else if (board[i][k] == board[i][j] && noBlockLeft(i,k,j,board) )
 						{
 							//移动
 							showMoveAnimation( i , j , i , k);
 							board[i][k] = 2 * board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 					}
 				}
@@ -203,9 +203,9 @@ function moveUp(){
 	//canMovUp()返回true,下面开始执行左移操作
 	//虽然已经确定可以移动了，但是我们还需进一步确定该移动到哪个位置
 	{
-		for( var i = 1 ; i < 4 ; i++)
+		for( var j = 0 ; j < 4 ; j++ )
 		{
-			for( var j = 0 ; j < 4 ; j++)
+			for( var i = 1 ; i < 4 ; i++ )
 			{
 				if ( board[i][j] != 0 )
 				{
@@ -217,16 +217,16 @@ function moveUp(){
 							showMoveAnimation( i , j , k , j);
 							board[k][j] = board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 
-						else if (board[i][k] == board[i][j] && noBlockUp(j,k,i,board) )
+						else if (board[k][j] == board[i][j] && noBlockUp(j,k,i,board) )
 						{
 							//移动
 							showMoveAnimation( i , j , k , j);
 							board[k][j] = 2 * board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 					}
 				}
@@ -258,7 +258,7 @@ function moveRight(){
 							showMoveAnimation( i , j , i , k);
 							board[i][k] = board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 
 						else if (board[i][k] == board[i][j] && noBlockRight(i,k,j,board) )
@@ -267,7 +267,7 @@ function moveRight(){
 							showMoveAnimation( i , j , i , k);
 							board[i][k] = 2 * board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 					}
 				}
@@ -285,9 +285,9 @@ function moveDown(){
 	//canMoveDown()返回true,下面开始执行下移操作
 	//虽然已经确定可以移动了，但是我们还需进一步确定该移动到哪个位置
 	{
-		for( var i = 2 ; i >= 0 ; i--)
+		for( var j = 0 ; j < 4 ; j++ )
 		{
-			for( var j = 0 ; j < 4 ; j++)
+			for( var i = 2 ; i >= 0 ; i-- )
 			{
 				if ( board[i][j] != 0 )
 				{
@@ -299,16 +299,16 @@ function moveDown(){
 							showMoveAnimation( i , j , k , j);
 							board[k][j] = board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 
-						else if (board[i][k] == board[i][j] && noBlockDown(j,k,i,board) )
+						else if (board[k][j] == board[i][j] && noBlockDown(j,k,i,board) )
 						{
 							//移动
 							showMoveAnimation( i , j , k , j);
 							board[k][j] = 2 * board[i][j];
 							board[i][j] = 0;
-							continue;
+							break;
 						}
 					}
 				}
