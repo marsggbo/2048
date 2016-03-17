@@ -80,7 +80,7 @@ function updateBoardView() {
 				//显示数值大小
 				thisNumberCell.text(board[i][j]);
 			}
-			
+
 			hasConflicted[i][j] = false;
 		}
 	}
@@ -102,13 +102,32 @@ function getOneNumber(board) {
 		var randx = parseInt(Math.floor(Math.random() * 4 ));
 		var randy = parseInt(Math.floor(Math.random() * 4 ));
 		//判断生成的坐标是否可以使用，即是否为空
+
+		//times是计数器
+		var times = 0;
 		while(1)
 		{
 			if ( board[randx][randy] == 0) {break;}
 			else{
 				randx = parseInt( Math.floor(Math.random() * 4 ) );
 				randy = parseInt( Math.floor(Math.random() * 4 ) );
+				times++ ;
 			}
+			if (times == 50) 
+			{
+				for( var i = 0 ; i < 4 ; i++ )
+					for( var  j = 0 ; j < 4 ; j++ )
+						if( board[i][j] == 0 )
+						{
+							randx = i ;
+							randy = j ;
+							break;
+						}
+			}
+
+			/*优化随机数生成效果，因为当所剩空格数越少的情况下，计算机正确随机生成随机数的位置几率就越小，这样就会使得游戏运行变慢，
+			所以我们可以人工设置一个计数器，当随机生成了50次的时候还没有找对地方，我们就可以人工的设置*/
+
 		}
 	//二、在随机位置随机产生一个数字,但又由游戏规则可知要么是2，要么是4
 		var randomNumber = Math.random()< 0.5 ? 2 : 4;
