@@ -29,3 +29,9 @@ function showMoveAnimation(fromx , fromy , tox , toy )
 		left:getposLeft(tox,toy)
 	},200);
 }
+
+//通知前端变化score的数值大小
+function updateScore( score )
+{
+	$('#score').text( score );
+}
