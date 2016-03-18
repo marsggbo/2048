@@ -2,6 +2,11 @@ var board = new Array();
 var score = 0;
 var hasConflicted = new Array();	//该数组作用是使每个格子每次只能发生一次叠加，且初始值设为false
 
+//触摸的触摸坐标
+var startx = 0 ;
+var starty = 0 ;
+var endx = 0 ;
+var endy = 0 ;
 
 $(document).ready(function(){
 	prepareForMobile();
@@ -192,6 +197,65 @@ $(document).keydown(function(event){
 			break;
 	}
 });
+
+//触碰监听器
+document.addEventListener('touchstart',function( event ){
+	startx = event.touches[0].pageX;
+	starty = event.touches[0].pageY;
+})
+
+document.addEventListener('touchend',function( event ){
+	endx = event.changedTouches[0].pageX;
+	endy = event.changedTouches[0].pageY;
+
+	var deltax = endx - startx ;
+	var deltay = endy - starty ;
+
+	if( Math.abs( deltax ) > Math.abs( deltay ) ) 
+		//x轴方向移动，x轴正方向是向右
+	{
+		if ( deltax > 0 )	//右移
+		{
+			if( moveRight(board) )
+			{
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
+			}
+		}
+
+		else   //左移
+		{
+			if( moveLeft(board) )
+			{
+				setTimeout("getOneNumber(board)",210);	
+				setTimeout("isgameover()",210);		
+			}
+		}
+	}
+
+	else
+	//y轴方向移动，注意y轴正方向是向下
+	{
+		if( deltay > 0 ) 	//下移
+		{
+			if( moveDown(board) )
+			{
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
+			}
+		}
+
+		else 		//上移
+		{
+			if( moveUp(board) )
+			{
+				setTimeout("getOneNumber(board)",210);		
+				setTimeout("isgameover()",210);		
+			}
+		}
+	}
+})
+
 
 function isgameover(){
 	if ( nospace(board) && nomove(board) )
