@@ -4,8 +4,26 @@ var hasConflicted = new Array();	//该数组作用是使每个格子每次只能
 
 
 $(document).ready(function(){
+	prepareForMobile();
 	newgame();
 });
+
+function prepareForMobile(){
+	if( documentWidth > 500 ){
+		gradeContainerWidth = 500 ; 
+		cellSpace = 20 ; 
+		cellSlideLength = 100 ;
+	}
+
+	$("#container").css("width" ,gradeContainerWidth - 2 * cellSpace);
+	$("#container").css("height",gradeContainerWidth - 2 * cellSpace);
+	$("#container").css("border-radius",gradeContainerWidth * 0.02);
+	$("#container").css("padding",cellSpace);
+
+	$(".grade-cell").css("width", cellSlideLength);
+	$(".grade-cell").css("height",cellSlideLength);
+	$(".grade-cell").css("border-radius",0.02 * cellSlideLength);
+}
 
 function newgame(){
 	//初始化棋盘格
@@ -48,8 +66,7 @@ function init(){
 //更新board数据
 function updateBoardView() {
 	$('.number-cell').remove();
-	for(var i = 0; i < 4; i++)
-	{
+	for(var i = 0; i < 4; i++){
 		for(var j = 0; j < 4; j++){
 			//增加类为number-cell的div，与原来的grade-cell区分开来,用于更新数据
 			//$('#container').append('<div class="number-cell" id="number-cell-"+i+"-"+j+'"></div>");
@@ -61,15 +78,15 @@ function updateBoardView() {
 			{
 				thisNumberCell.css('width','0px');
 				thisNumberCell.css('height','0px');
-				thisNumberCell.css('top',getposTop(i,j) + 50);
-				thisNumberCell.css('left',getposLeft(i,j) + 50);
+				thisNumberCell.css('top',getposTop(i,j) + 0.5*cellSlideLength);
+				thisNumberCell.css('left',getposLeft(i,j) + 0.5*cellSlideLength);
 			}
 			else
 			//如果操作对象数值不为0，则将其宽高均设为100px，并更新其位置
 			//同时，还需要更新背景色和前端显示的字体颜色
 			{
-				thisNumberCell.css('width','100px');
-				thisNumberCell.css('height','100px');
+				thisNumberCell.css('width',cellSlideLength);
+				thisNumberCell.css('height',cellSlideLength);
 				thisNumberCell.css('top',getposTop(i,j));
 				thisNumberCell.css('left',getposLeft(i,j));
 
@@ -84,6 +101,8 @@ function updateBoardView() {
 			hasConflicted[i][j] = false;
 		}
 	}
+	$(".number-cell").css("line-height",cellSlideLength + 'px');
+	$(".number-cell").css("font-size",0.6 * cellSlideLength + 'px');
 }
 
 

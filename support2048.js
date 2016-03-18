@@ -1,10 +1,16 @@
+documentWidth = window.screen.availWidth;	//获取设备屏幕宽度
+gradeContainerWidth = 0.92 * documentWidth;		//定义棋盘格的宽度
+cellSlideLength = 0.18 * documentWidth;			//每个小格子的宽度
+cellSpace = 0.04 * documentWidth;				//每个小格子之间的间距
+
+
 //计算距离顶端的距离
 function getposTop(i,j){
-	return 20*(i+1)+100*i;
+	return cellSpace*(i+1)+cellSlideLength*i;
 }
 //计算距离左端的距离
 function getposLeft(i,j){
-	return 20*(j+1)+100*j;
+	return cellSpace*(j+1)+cellSlideLength*j;
 }
 //number-cell背景色更新
 function getNumberBackColor(number){

@@ -12,8 +12,8 @@ function showNumberWithAnimation(i,j,randomNumber){
 	numbercell.text(randomNumber);
 
 	numbercell.animate({
-		width:"100px",
-		height:"100px",
+		width:cellSlideLength,
+		height:cellSlideLength,
 		top:getposTop(i,j),
 		left:getposLeft(i,j)
 	},50);

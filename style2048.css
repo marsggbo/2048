@@ -5,13 +5,13 @@
 header{
 	display: block;
 	margin: 0px auto;
-	width: 500px;
+	width: 100%;
 	text-align: center;
 }
 /*2048样式设置*/
 h1{
 	font-family: Arial;
-	font-size: 60px;
+	font-size: 40px;
 	font-weight: bold;
 }
 /*按钮样式设置*/
@@ -29,7 +29,7 @@ header #newgamebutton{
 	border-radius: 10px;
 	text-decoration: none;
 }
-/*[再来一次]按钮鼠标上移特效*/
+/*[重新开始]按钮鼠标上移特效*/
 header #newgamebutton:hover{background-color: #9f8b77}
 /*分数score样式*/
 header p{font-family: Arial;font-size: 25px;margin: 20px auto;}
