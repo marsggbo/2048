@@ -204,12 +204,20 @@ document.addEventListener('touchstart',function( event ){
 	starty = event.touches[0].pageY;
 })
 
+document.addEventListener('touchmove',function( event ){
+	event.preventDefault();
+})
 document.addEventListener('touchend',function( event ){
 	endx = event.changedTouches[0].pageX;
 	endy = event.changedTouches[0].pageY;
 
 	var deltax = endx - startx ;
 	var deltay = endy - starty ;
+
+	//判断用户的意图，即只有当用户滑动一定距离才作出响应，否则则认为用户并没有想要移动的意图
+	if( Math.abs( deltax ) < 0.3*documentWidth && Math.abs( deltay ) < 0.3*documentWidth){
+		return;
+	}
 
 	if( Math.abs( deltax ) > Math.abs( deltay ) ) 
 		//x轴方向移动，x轴正方向是向右
